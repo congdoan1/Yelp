@@ -22,10 +22,10 @@ import AFNetworking
 import BDBOAuth1Manager
 
 // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
-let yelpConsumerKey = "vxKwwcR_NMQ7WaEiQBK_CA"
-let yelpConsumerSecret = "33QCvh5bIF5jIHR5klQr7RtBDhQ"
-let yelpToken = "uRcRswHFYa1VkDrGV6LAW2F8clGh5JHV"
-let yelpTokenSecret = "mqtKIxMIR4iBtBPZCmCLEb-Dz3Y"
+let yelpConsumerKey = "YydS5AXSfjqUqUi5rZCvyQ"
+let yelpConsumerSecret = "kRJusk_KfaRbnDUfZpSIWXIUouo"
+let yelpToken = "pn99fgIpkSOM2gHKAkFgtIhmNyy6gaSX"
+let yelpTokenSecret = "SRZukxVm8TG6pNcfKFq0DMOh2IA"
 
 enum YelpSortMode: Int {
     case BestMatched = 0, Distance, HighestRated
@@ -61,15 +61,20 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         self.requestSerializer.saveAccessToken(token)
     }
     
-    func searchWithTerm(term: String, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
-        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, completion: completion)
+    func searchWithTerm(term: String, limit: Int?, offset: Int?, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
+        return searchWithTerm(term, limit: limit, offset: offset, sort: nil, categories: nil, deals: nil, distance: nil, completion: completion)
     }
     
-    func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
+    func searchWithTerm(term: String, limit: Int?, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int?, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
         // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
         
         // Default the location to San Francisco
         var parameters: [String : AnyObject] = ["term": term, "ll": "37.785771,-122.406165"]
+        
+        if limit != nil && offset != nil {
+            parameters["limit"] = limit
+            parameters["offset"] = offset
+        }
         
         if sort != nil {
             parameters["sort"] = sort!.rawValue
@@ -83,14 +88,23 @@ class YelpClient: BDBOAuth1RequestOperationManager {
             parameters["deals_filter"] = deals!
         }
         
+        if distance != nil {
+            parameters["radius_filter"] = distance!
+        }
+        
         print(parameters)
         
-        return self.GET("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-            let dictionaries = response["businesses"] as? [NSDictionary]
-            if dictionaries != nil {
-                completion(Business.businesses(array: dictionaries!), nil)
-            }
-            }, failure: { (operation: AFHTTPRequestOperation?, error: NSError!) -> Void in
+        return self.GET(
+            "search",
+            parameters: parameters,
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                let dictionaries = response["businesses"] as? [NSDictionary]
+                if dictionaries != nil {
+                    print(dictionaries)
+                    completion(Business.businesses(array: dictionaries!), nil)
+                }
+            },
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError!) -> Void in
                 completion(nil, error)
         })!
     }

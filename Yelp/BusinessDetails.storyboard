@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="CfY-P8-2Ly">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Business Details View Controller-->
+        <scene sceneID="Wyx-Dy-ymL">
+            <objects>
+                <viewController id="CfY-P8-2Ly" customClass="BusinessDetailsViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sdb-Bc-3AZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="HUc-7c-EFW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nsZ-0o-whH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LVR-9g-6Zy">
+                                <rect key="frame" x="0.0" y="20" width="320" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="Qcz-iB-gfn"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kgc-2A-k0j">
+                                <rect key="frame" x="0.0" y="20" width="320" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="v3f-Fs-eFl">
+                                <rect key="frame" x="0.0" y="30" width="320" height="538"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Kgc-2A-k0j" firstAttribute="centerX" secondItem="LVR-9g-6Zy" secondAttribute="centerX" id="58D-Fn-Jzi"/>
+                            <constraint firstItem="v3f-Fs-eFl" firstAttribute="top" secondItem="sdb-Bc-3AZ" secondAttribute="bottom" constant="10" id="BeH-UU-mJR"/>
+                            <constraint firstItem="Kgc-2A-k0j" firstAttribute="centerY" secondItem="LVR-9g-6Zy" secondAttribute="centerY" id="HCB-SE-F43"/>
+                            <constraint firstItem="HUc-7c-EFW" firstAttribute="top" secondItem="v3f-Fs-eFl" secondAttribute="bottom" id="M0h-Ae-YaV"/>
+                            <constraint firstItem="Kgc-2A-k0j" firstAttribute="width" secondItem="LVR-9g-6Zy" secondAttribute="width" id="Mjt-eS-NFV"/>
+                            <constraint firstAttribute="trailing" secondItem="LVR-9g-6Zy" secondAttribute="trailing" id="Vg3-ff-e7P"/>
+                            <constraint firstItem="v3f-Fs-eFl" firstAttribute="leading" secondItem="nsZ-0o-whH" secondAttribute="leading" id="iw6-fV-OjX"/>
+                            <constraint firstItem="Kgc-2A-k0j" firstAttribute="height" secondItem="LVR-9g-6Zy" secondAttribute="height" id="kGX-aK-7dU"/>
+                            <constraint firstAttribute="trailing" secondItem="v3f-Fs-eFl" secondAttribute="trailing" id="psF-WA-YWn"/>
+                            <constraint firstItem="LVR-9g-6Zy" firstAttribute="top" secondItem="sdb-Bc-3AZ" secondAttribute="bottom" id="v9j-1f-Hub"/>
+                            <constraint firstItem="LVR-9g-6Zy" firstAttribute="leading" secondItem="nsZ-0o-whH" secondAttribute="leading" id="zKP-PM-J6u"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="6tm-tp-fzE"/>
+                    <connections>
+                        <outlet property="blurView" destination="Kgc-2A-k0j" id="8dV-Ji-G3t"/>
+                        <outlet property="imgView" destination="LVR-9g-6Zy" id="iHN-Wd-yKK"/>
+                        <outlet property="tableView" destination="v3f-Fs-eFl" id="el5-dC-5jM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VV1-5W-vH2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="658" y="357"/>
+        </scene>
+    </scenes>
+</document>

@@ -12,21 +12,44 @@ class Business: NSObject {
     let name: String?
     let address: String?
     let imageURL: NSURL?
+    let imageLargeURL: NSURL?
     let categories: String?
     let distance: String?
     let ratingImageURL: NSURL?
     let reviewCount: NSNumber?
+    var coordinate = Coordinate()
+    var deal = Deal()
+    
+    struct Coordinate {
+        var latitude: Double?
+        var longitude: Double?
+    }
+    
+    struct Deal {
+        var title: String?
+    }
     
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
         
+        // image
         let imageURLString = dictionary["image_url"] as? String
         if imageURLString != nil {
             imageURL = NSURL(string: imageURLString!)!
+            imageLargeURL = NSURL(fileURLWithPath: "o.jpg", relativeToURL: imageURL!.URLByDeletingLastPathComponent)
         } else {
             imageURL = nil
+            imageLargeURL = nil
         }
         
+        // deal (optional)
+        if let deals = dictionary["deals"] as? NSDictionary {
+            if let title = deals["title"] as? String {
+                deal.title = title
+            }
+        }
+        
+        // location, address
         let location = dictionary["location"] as? NSDictionary
         var address = ""
         if location != nil {
@@ -42,9 +65,19 @@ class Business: NSObject {
                 }
                 address += neighborhoods![0] as! String
             }
+            
+            if let coordinatesDictionary = location!["coordinate"] as? NSDictionary {
+                if let latitude = coordinatesDictionary["latitude"] as? Double {
+                    coordinate.latitude = latitude
+                }
+                if let longitude = coordinatesDictionary["longitude"] as? Double {
+                    coordinate.longitude = longitude
+                }
+            }
         }
         self.address = address
         
+        // categories
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
             var categoryNames = [String]()
@@ -57,6 +90,7 @@ class Business: NSObject {
             categories = nil
         }
         
+        // distance
         let distanceMeters = dictionary["distance"] as? NSNumber
         if distanceMeters != nil {
             let milesPerMeter = 0.000621371
@@ -65,6 +99,7 @@ class Business: NSObject {
             distance = nil
         }
         
+        // rating image
         let ratingImageURLString = dictionary["rating_img_url_large"] as? String
         if ratingImageURLString != nil {
             ratingImageURL = NSURL(string: ratingImageURLString!)
@@ -74,7 +109,7 @@ class Business: NSObject {
         
         reviewCount = dictionary["review_count"] as? NSNumber
     }
-
+    
     class func businesses(array array: [NSDictionary]) -> [Business] {
         var businesses = [Business]()
         for dictionary in array {
@@ -84,7 +119,11 @@ class Business: NSObject {
         return businesses
     }
     
-    class func searchWithTerm(term: String, completion: ([Business]!, NSError!) -> Void) {
-        YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
+    class func searchWithTerm(term: String, limit: Int?, offset: Int?, completion: ([Business]!, NSError!) -> Void) {
+        YelpClient.sharedInstance.searchWithTerm(term, limit: limit, offset: offset, completion: completion)
+    }
+    
+    class func searchWithTerm(term: String, limit: Int?, offset: Int?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int?, completion: ([Business]!, NSError!) -> Void) -> Void {
+        YelpClient.sharedInstance.searchWithTerm(term, limit: limit, offset: offset, sort: sort, categories: categories, deals: deals, distance: distance, completion: completion)
     }
 }

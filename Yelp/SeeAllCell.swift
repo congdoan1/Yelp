@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowAllCell: UITableViewCell {
+class SeeAllCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -23,18 +23,51 @@ class BusinessCell: UITableViewCell {
     var business: Business! {
         didSet {
             nameLabel.text = "\(row + 1). " + business.name!
+            
             distanceLabel.text = business.distance
+            
             if let reviewsCount = business.reviewCount {
                 reviewsCountLabel.text = "\(reviewsCount) Review" + (reviewsCount == 1 ? "" : "s")
             }
+            
             priceLabel.text = "$$$$"
+            
             if let address = business.address {
                 addressLabel.text = address
             }
+            
             categoriesLabel.text = business.categories
+            
             if let imageURL = business.imageURL {
                 thumbImageView.setImageWithURL(imageURL)
             }
+            if let imageURL = business.imageURL {
+                let imageRequest = NSURLRequest(URL: imageURL)
+                
+                self.thumbImageView.setImageWithURLRequest(
+                    imageRequest,
+                    placeholderImage: UIImage(named: "yelp"),
+                    success: { (imageRequest, imageResponse, image) -> Void in
+                        
+                        // imageResponse will be nil if the image is cached
+                        if imageResponse != nil {
+                            print("Image was NOT cached, fade in image")
+                            self.thumbImageView.alpha = 0.0
+                            self.thumbImageView.image = image
+                            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                                self.thumbImageView.alpha = 1.0
+                            })
+                            
+                        } else {
+                            print("Image was cached so just update the image")
+                            self.thumbImageView.image = image
+                        }
+                    },
+                    failure: { (imageRequest, imageResponse, image) -> Void in
+                        // do something for the failure condition
+                })
+            }
+            
             if let ratingImageURL = business.ratingImageURL {
                 ratingImageView.setImageWithURL(ratingImageURL)
             }

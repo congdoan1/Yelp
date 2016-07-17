@@ -11,16 +11,16 @@ class Filter {
     
     static let distance: [[String: AnyObject]] = [
         ["name": "Best Match", "code": 0],
-        ["name": "0.3 miles", "code": 1],
-        ["name": "1 mile", "code": 2],
-        ["name": "5 miles", "code": 3],
-        ["name": "20 miles", "code": 4]
+        ["name": "0.3 miles", "code": 483],
+        ["name": "1 mile", "code": 1609],
+        ["name": "5 miles", "code": 8047],
+        ["name": "20 miles", "code": 32187]
     ]
     
     static let sortBy: [[String: AnyObject]] = [
-        ["name": "Best Match", "code": 0],
-        ["name": "Distance", "code": 1],
-        ["name": "Rating", "code": 2]
+        ["name": "Best Match", "code": YelpSortMode.BestMatched.rawValue],
+        ["name": "Distance", "code": YelpSortMode.Distance.rawValue],
+        ["name": "Rating", "code": YelpSortMode.BestMatched.rawValue]
     ]
     
     static let categories = [
