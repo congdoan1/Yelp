@@ -204,7 +204,6 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.nameLabel.text = nil
         cell.distanceLabel.text = nil
         cell.reviewsCountLabel.text = nil
-        cell.priceLabel.text = nil
         cell.addressLabel.text = nil
         cell.categoriesLabel.text = nil
         cell.thumbImageView.image = nil

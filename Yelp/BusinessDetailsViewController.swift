@@ -28,7 +28,7 @@ class BusinessDetailsViewController: UIViewController {
             imgView.setImageWithURL(imageLargeURL)
         }
         
-        let tableHeaderView = BusinessDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 215))
+        let tableHeaderView = BusinessDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 210))
         tableHeaderView.business = business
         tableView.tableHeaderView = tableHeaderView
     }
@@ -65,5 +65,12 @@ extension BusinessDetailsViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         return UITableViewCell()
+    }
+}
+
+extension BusinessDetailsViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let offset = tableView.contentOffset.y
+        
     }
 }

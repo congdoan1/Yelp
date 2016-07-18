@@ -13,7 +13,6 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var reviewsCountLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var categoriesLabel: UILabel!
     @IBOutlet weak var thumbImageView: UIImageView!
@@ -27,10 +26,8 @@ class BusinessCell: UITableViewCell {
             distanceLabel.text = business.distance
             
             if let reviewsCount = business.reviewCount {
-                reviewsCountLabel.text = "\(reviewsCount) Review" + (reviewsCount == 1 ? "" : "s")
+                reviewsCountLabel.text = "\(reviewsCount) review" + (reviewsCount == 1 ? "" : "s")
             }
-            
-            priceLabel.text = "$$$$"
             
             if let address = business.address {
                 addressLabel.text = address
