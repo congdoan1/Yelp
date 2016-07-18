@@ -1,5 +1,5 @@
 //
-//  ShowAllCell.swift
+//  SeeAllCell.swift
 //  Yelp
 //
 //  Created by Doan Cong Toan on 7/14/16.

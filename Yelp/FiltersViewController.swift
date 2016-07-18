@@ -1,5 +1,5 @@
 //
-//  FilterViewController.swift
+//  FiltersViewController.swift
 //  Yelp
 //
 //  Created by Doan Cong Toan on 7/14/16.
@@ -58,11 +58,11 @@ class FiltersViewController: UIViewController {
     }
     
     @IBAction func onSearchFilters(sender: UIBarButtonItem) {
-        filters["deals"] = isOfferingADeal
+        filters[Utils.DealsFilter] = isOfferingADeal
         
-        filters["distance"] = distanceRowChoice["code"] as? Int
+        filters[Utils.DistanceFilter] = distanceRowChoice["code"] as? Int
         
-        filters["sortBy"] = sortByRowChoice["code"] as? Int
+        filters[Utils.SortByFilter] = sortByRowChoice["code"] as? Int
         
         var selectedCategories = [String]()
         for (row, isSelected) in categoriesSwitchStates {
@@ -70,10 +70,9 @@ class FiltersViewController: UIViewController {
                 selectedCategories.append(Filter.categories[row]["code"]!)
             }
         }
-        print("selectedCategories: \(selectedCategories)")
-        filters["categories"] = selectedCategories.count > 0 ? selectedCategories : nil
-        
+        filters[Utils.CategoriesFilter] = selectedCategories.count > 0 ? selectedCategories : nil
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
+        Utils.sharedInstance.saveLastSearchFilters(filters)
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -257,7 +256,6 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension FiltersViewController: SwitchCellDelegate {
     func switchCell(switchCell: SwitchCell, didValueChanged value: Bool) {
-        print("switchCell \(value)")
         let indexPath = tableView.indexPathForCell(switchCell)!
         switch indexPath.section {
         case 0:

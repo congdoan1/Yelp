@@ -30,7 +30,7 @@ class BusinessesViewController: UIViewController {
     var searchCurrentOffset = 0
     
     var businesses: [Business]!
-    var lastSearchTerm = "Thai"
+    var lastSearchTerm = "Restaurants"
     var lastSearchFilters: [String: AnyObject]?
     var currentViewMode = ViewMode.List
     
@@ -49,6 +49,7 @@ class BusinessesViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         searchBar = UISearchBar()
+        searchBar.delegate = self
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
         
@@ -62,8 +63,17 @@ class BusinessesViewController: UIViewController {
         insets.bottom += InfiniteScrollActivityView.defaultHeight;
         tableView.contentInset = insets
         
-        searchWithTerm(lastSearchTerm, limit: searchDefaultLimit, offset: searchDefaultOffset)
         
+        let lastSearchTermSaved = NSUserDefaults.standardUserDefaults().objectForKey(Utils.LastSearchTerm) as? String
+        lastSearchTerm = lastSearchTermSaved == nil ? lastSearchTerm : lastSearchTermSaved!
+        
+        if NSUserDefaults.standardUserDefaults().boolForKey(Utils.IsFiltered) {
+            lastSearchFilters = Utils.sharedInstance.getLastSearchFilters()
+            print("lastSearchFilters \(lastSearchFilters)")
+            searchWithTerm(lastSearchTerm, limit: searchDefaultLimit, offset: searchDefaultOffset, filters: lastSearchFilters!)
+        } else {
+            searchWithTerm(lastSearchTerm, limit: searchDefaultLimit, offset: searchDefaultOffset)
+        }
         searchBar.text = lastSearchTerm
         
         // set the region to display, this also sets a correct zoom level
@@ -108,10 +118,10 @@ class BusinessesViewController: UIViewController {
     
     func searchWithTerm(term: String, limit: Int?, offset: Int?, filters: [String: AnyObject]) -> Void {
         print(filters)
-        let deals = filters["deals"] as? Bool
-        let distance = filters["distance"] as? Int
-        let sortBy = filters["sortBy"] as? Int
-        let categories = filters["categories"] as? [String]
+        let deals = filters[Utils.DealsFilter] as? Bool
+        let distance = filters[Utils.DistanceFilter] as? Int
+        let sortBy = filters[Utils.SortByFilter] as? Int
+        let categories = filters[Utils.CategoriesFilter] as? [String]
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         Business.searchWithTerm(lastSearchTerm, limit: limit, offset: offset, sort: YelpSortMode(rawValue: sortBy!), categories: categories, deals: deals, distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
@@ -153,6 +163,7 @@ class BusinessesViewController: UIViewController {
     func loadMoreData() {
         searchCurrentOffset += searchDefaultLimit
         if lastSearchFilters == nil {
+            print("filters nil")
             Business.searchWithTerm(
                 lastSearchTerm,
                 limit: searchDefaultLimit,
@@ -165,10 +176,11 @@ class BusinessesViewController: UIViewController {
                     self.addAnnotationForBusinesses(self.businesses)
             })
         } else {
-            let deals = lastSearchFilters!["deals"] as? Bool
-            let distance = lastSearchFilters!["distance"] as? Int
-            let sortBy = lastSearchFilters!["sortBy"] as? Int
-            let categories = lastSearchFilters!["categories"] as? [String]
+            print("filters not nil")
+            let deals = lastSearchFilters![Utils.DealsFilter] as? Bool
+            let distance = lastSearchFilters![Utils.DistanceFilter] as? Int
+            let sortBy = lastSearchFilters![Utils.SortByFilter] as? Int
+            let categories = lastSearchFilters![Utils.CategoriesFilter] as? [String]
             // add hub progress
             Business.searchWithTerm(lastSearchTerm,
                                     limit: searchDefaultLimit,
@@ -179,7 +191,7 @@ class BusinessesViewController: UIViewController {
                                     distance: distance) { (businesses: [Business]!, error: NSError!) -> Void in
                                         self.isMoreDataLoading = false
                                         self.loadingMoreView?.stopAnimating()
-                                        self.businesses = businesses
+                                        self.businesses.appendContentsOf(businesses)
                                         self.tableView.reloadData()
                                         self.addAnnotationForBusinesses(self.businesses)
             }
@@ -254,6 +266,34 @@ extension BusinessesViewController: FiltersViewControllerDelegate {
         searchWithTerm(lastSearchTerm, limit: searchDefaultLimit, offset: searchDefaultOffset, filters: filters)
     }
 }
+
+// MARK: - UISearchBarDelegate
+
+extension BusinessesViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = lastSearchTerm
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        let searchTerm = searchBar.text!
+        lastSearchTerm = searchTerm
+        NSUserDefaults.standardUserDefaults().setObject(lastSearchTerm, forKey: Utils.LastSearchTerm)
+        lastSearchFilters = nil
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: Utils.IsFiltered)
+        searchCurrentOffset = searchDefaultOffset
+        searchWithTerm(lastSearchTerm, limit: searchDefaultLimit, offset: searchDefaultOffset)
+        searchBar.resignFirstResponder()
+    }
+}
+
+//MARK: - MKMapView
 
 extension BusinessesViewController {
     func goToLocation(location: CLLocation) {

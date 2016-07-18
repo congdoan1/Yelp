@@ -10,8 +10,6 @@ import UIKit
 
 class BusinessDetailsViewController: UIViewController {
 
-    @IBOutlet weak var imgView: UIImageView!
-    @IBOutlet weak var blurView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
     var business: Business!
@@ -24,11 +22,7 @@ class BusinessDetailsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        if let imageLargeURL = business.imageLargeURL {
-            imgView.setImageWithURL(imageLargeURL)
-        }
-        
-        let tableHeaderView = BusinessDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 210))
+        let tableHeaderView = BusinessDetailsHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 250))
         tableHeaderView.business = business
         tableView.tableHeaderView = tableHeaderView
     }
@@ -40,9 +34,6 @@ class BusinessDetailsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let tableHeaderView = tableView.tableHeaderView as! BusinessDetailsHeaderView
-        tableHeaderView.topContainerView.alpha = 1
-        blurView.alpha = 0.8
     }
     
 
@@ -60,17 +51,11 @@ class BusinessDetailsViewController: UIViewController {
 
 extension BusinessDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-}
-
-extension BusinessDetailsViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let offset = tableView.contentOffset.y
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier("ImageCell")
+        return cell!
     }
 }

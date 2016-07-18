@@ -1,5 +1,5 @@
 //
-//  Theme.swift
+//  Color.swift
 //  Yelp
 //
 //  Created by Doan Cong Toan on 7/18/16.

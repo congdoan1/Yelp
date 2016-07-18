@@ -19,6 +19,7 @@ class Business: NSObject {
     let reviewCount: NSNumber?
     var coordinate = Coordinate()
     var deal = Deal()
+    let phone: String?
     
     struct Coordinate {
         var latitude: Double?
@@ -108,6 +109,7 @@ class Business: NSObject {
         }
         
         reviewCount = dictionary["review_count"] as? NSNumber
+        phone = dictionary["phone"] as? String
     }
     
     class func businesses(array array: [NSDictionary]) -> [Business] {
