@@ -144,6 +144,7 @@ class BusinessesViewController: UIViewController {
                 },
                 completion: nil
             )
+            sender.title = ViewMode.List.rawValue
         } else {
             currentViewMode = .List
             UIView.transitionWithView(
@@ -156,8 +157,9 @@ class BusinessesViewController: UIViewController {
                 },
                 completion: nil
             )
+            sender.title = ViewMode.Map.rawValue
         }
-        sender.title = currentViewMode.rawValue
+        
     }
     
     func loadMoreData() {
