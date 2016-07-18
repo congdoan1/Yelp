@@ -85,7 +85,7 @@ class Business: NSObject {
                 let categoryName = category[0]
                 categoryNames.append(categoryName)
             }
-            categories = categoryNames.joinWithSeparator(", ")
+            categories = categoryNames.joinWithSeparator(" | ")
         } else {
             categories = nil
         }

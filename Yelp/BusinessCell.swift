@@ -17,11 +17,13 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var categoriesLabel: UILabel!
     @IBOutlet weak var thumbImageView: UIImageView!
     @IBOutlet weak var ratingImageView: UIImageView!
+    @IBOutlet weak var footerSpaceView: UIView!
     
     var row: Int!
     var business: Business! {
         didSet {
             nameLabel.text = "\(row + 1). " + business.name!
+            nameLabel.textColor = Color.yelpMainColor()
             
             distanceLabel.text = business.distance
             
@@ -77,6 +79,8 @@ class BusinessCell: UITableViewCell {
         
         thumbImageView.layer.cornerRadius = 4
         thumbImageView.clipsToBounds = true
+        
+        footerSpaceView.backgroundColor = Color.yelpBgrColor()
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

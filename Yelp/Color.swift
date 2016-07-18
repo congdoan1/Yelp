@@ -12,15 +12,19 @@ import UIKit
 public func applyTheme() {
     UINavigationBar.appearance().translucent = false
     UINavigationBar.appearance().barStyle = .Black
-    UINavigationBar.appearance().barTintColor = UIColor.yelpRed()
+    UINavigationBar.appearance().barTintColor = Color.yelpMainColor()
     UINavigationBar.appearance().tintColor = UIColor.whiteColor()
     UISearchBar.appearance().translucent = false
-    UISearchBar.appearance().barTintColor = UIColor.yelpRed()
+    UISearchBar.appearance().barTintColor = Color.yelpMainColor()
 }
 
-extension UIColor {
-    class func yelpRed() -> UIColor {
-        return UIColor(red:0.76, green:0.02, blue:0.04, alpha:1.0)
+class Color {
+    class func yelpMainColor() -> UIColor {
+        return UIColor(red:240.0/255.0, green:71.0/255.0, blue:49.0/255.0, alpha:1.0)
+    }
+
+    class func yelpBgrColor() -> UIColor {
+        return UIColor(red:239.0/255.0, green:239.0/255.0, blue:244.0/255.0, alpha:1.0)
     }
     
     class func yelpFloatLightBackground() -> UIColor {

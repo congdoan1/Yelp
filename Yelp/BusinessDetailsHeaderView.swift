@@ -54,12 +54,12 @@ class BusinessDetailsHeaderView: UIView {
         
         writeReviewContainerView.layer.cornerRadius = 7
         writeReviewContainerView.layer.borderWidth = 1
-        writeReviewContainerView.layer.borderColor = UIColor.yelpFloatBorder().CGColor
-        writeReviewContainerView.backgroundColor = UIColor.yelpFloatLightBackground()
+        writeReviewContainerView.layer.borderColor = Color.yelpFloatBorder().CGColor
+        writeReviewContainerView.backgroundColor = Color.yelpFloatLightBackground()
         
-        bottomContainerView.backgroundColor = UIColor.yelpFloatLightBackground()
+        bottomContainerView.backgroundColor = Color.yelpFloatLightBackground()
         for dividerView in dividerViews {
-            dividerView.backgroundColor = UIColor.yelpFloatBorder()
+            dividerView.backgroundColor = Color.yelpFloatBorder()
         }
     }
 }

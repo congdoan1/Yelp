@@ -22,7 +22,7 @@ class BusinessesViewController: UIViewController {
         case List = "List"
         case Map = "Map"
     }
-    
+
     var searchBar: UISearchBar!
     
     let searchDefaultLimit = 20
@@ -45,7 +45,7 @@ class BusinessesViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.estimatedRowHeight = 90
+        tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         
         searchBar = UISearchBar()
@@ -190,6 +190,7 @@ class BusinessesViewController: UIViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let businesses = businesses {
             return businesses.count
